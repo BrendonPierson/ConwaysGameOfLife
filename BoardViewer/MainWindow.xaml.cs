@@ -11,12 +11,14 @@ namespace BoardViewer
     /// </summary>
     public partial class MainWindow : Window
     {
-        private Board currentBoard;
+        private GameBoard currentBoard;
         private DispatcherTimer dispatcherTimer;
 
         public MainWindow()
         {
-            currentBoard = new FauxGameOfLife();
+            // currentBoard = new FauxGameOfLife();
+            currentBoard = new GameBoard(4);
+            // currentBoard.KillCell(0, 0);
             dispatcherTimer = new DispatcherTimer();
 
             InitializeComponent();

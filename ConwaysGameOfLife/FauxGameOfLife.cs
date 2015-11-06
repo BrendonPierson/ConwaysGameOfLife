@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ConwaysGameOfLife
 {
-    public class FauxGameOfLife : Board
+    public class FauxGameOfLife //: Board
     {
         private List<List<bool>> cells = new List<List<bool>>();
         private Dictionary<char, List<List<bool>>> font = new Dictionary<char, List<List<bool>>>();
@@ -105,6 +105,7 @@ namespace ConwaysGameOfLife
 
         public void Tick()
         {
+            // Iterate through hello work then restart
             if(index >= phrase.Length)
             {
                 index = 0;
