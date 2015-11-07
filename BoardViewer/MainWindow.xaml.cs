@@ -17,8 +17,13 @@ namespace BoardViewer
         public MainWindow()
         {
             // currentBoard = new FauxGameOfLife();
-            currentBoard = new GameBoard(4);
-            // currentBoard.KillCell(0, 0);
+            currentBoard = new GameBoard(10);
+            currentBoard.MakeCellAlive(5, 5);
+            currentBoard.MakeCellAlive(6, 5);
+            currentBoard.MakeCellAlive(6, 6);
+            currentBoard.MakeCellAlive(7, 6);
+            currentBoard.MakeCellAlive(6, 7);
+            currentBoard.MakeCellAlive(7, 7);
             dispatcherTimer = new DispatcherTimer();
 
             InitializeComponent();

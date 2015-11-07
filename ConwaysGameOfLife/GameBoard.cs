@@ -35,7 +35,7 @@ namespace ConwaysGameOfLife
             List<Cell> row = new List<Cell>();
             for(var col = 0; col < size; col++)
             {
-                row.Add( new Cell(false, rowNum, col));
+                row.Add( new Cell(false, rowNum, col, size));
             }
             return row;
         }
@@ -52,32 +52,80 @@ namespace ConwaysGameOfLife
         }
 
         // For each cell
-        //1. Find number of alive neighbors
-        public int NeighborsAlive(int row, int col)
+        public void CheckAllCells()
         {
-            //For each list in cell.neighbors, find that cell and check if it is living
-            int aliveCount = 0;
-            List<List<int>> neighbors = cells[row][col].Neighbors;
-            foreach(var neighbor in neighbors)
+            for (int r = 0; r < size; r++)
             {
-                if (cells[neighbor[0]][neighbor[1]] != null && cells[neighbor[0]][neighbor[1]].Alive) { aliveCount++; }
+                for (int c = 0; c < size; c++)
+                {
+                    cells[r][c].ChangeOnNextTick = false;
+                    int aliveCount = NeighborsAlive(r, c)[0];
+                    int deadCount = NeighborsAlive(r, c)[1];
+                    ChangeStatus(r, c, aliveCount, deadCount);
+                }
             }
-            return aliveCount;
         }
+        //1. Find number of alive neighbors
         //2. Find number of dead neighbors
+        public int[] NeighborsAlive(int row, int col)
+        {
+            int aliveCount = 0;
+            int deadCount = 0;
+            List<List<int>> neighbors = cells[row][col].Neighbors;
+            foreach (var neighbor in neighbors)
+            {
+                if (cells[neighbor[0]][neighbor[1]].Alive)
+                {
+                    aliveCount++;
+                }
+                if (!cells[neighbor[0]][neighbor[1]].Alive)
+                {
+                    deadCount++;
+                }
+             }
+            return new int[] { aliveCount, deadCount };
+        }
+
         //3. Apply rules accordingly
+        public bool ChangeStatus(int row, int col, int aliveCount, int deadCount)
+        {
+            if (cells[row][col].Alive && aliveCount < 2 || aliveCount > 3)
+            {
+                cells[row][col].ChangeOnNextTick = true;
+                return true;
+            }
+            if (!cells[row][col].Alive && aliveCount == 3)
+            {
+                cells[row][col].ChangeOnNextTick = true;
+                return true;
+            }
+            return false;
+        }
 
-
-
-
-
-
+        // Change colors once all cells are checked
+        public void ChangeColors()
+        {
+            for(int r = 0; r < size; r++)
+            {
+                for(int c = 0; c < size; c++)
+                {
+                    if (cells[r][c].ChangeOnNextTick)
+                    {
+                        cells[r][c].Alive = cells[r][c].Alive ? false : true;
+                    }
+                    //if (cells[r][c].ChangeOnNextTick)
+                    //{
+                    //    cells[r][c].ChangeAliveProperty();
+                    //}
+                }
+            }
+        }
 
         // From interface
         public void Tick()
         {
-            throw new NotImplementedException();
-            // Change appropriate Cells
+            CheckAllCells();
+            ChangeColors();
         }
 
         // used to create list format necessary for visualizer

@@ -54,8 +54,26 @@ namespace ConwaysGameOfLifeTests
         {
             GameBoard board = new GameBoard(10);
             board.MakeCellAlive(5, 5);
-            int actual = board.NeighborsAlive(4,5);
+            int actual = board.NeighborsAlive(4,5)[0];
             Assert.AreEqual(1, actual);
+        }
+
+        [TestMethod]
+        public void IsDeadCount7()
+        {
+            GameBoard board = new GameBoard(10);
+            board.MakeCellAlive(5, 5);
+            int actual = board.NeighborsAlive(4, 5)[1];
+            Assert.AreEqual(7, actual);
+        }
+
+        [TestMethod]
+        public void ChangeStatusAccordingToRules()
+        {
+            GameBoard board = new GameBoard(6);
+            board.MakeCellAlive(5, 5);
+            bool actual = board.ChangeStatus(5, 5, 0, 8);
+            Assert.AreEqual(true, actual);
         }
     }
 }

@@ -11,6 +11,9 @@ namespace ConwaysGameOfLife
         private bool alive;
         private int row;
         private int col;
+        private int gridSize;
+        private bool changeOnNextTick;
+        public bool ChangeOnNextTick;
         private List<List<int>> neighbors;
 
         // Unclear why Row needs explicite setter/getter but col doesn't?
@@ -28,25 +31,85 @@ namespace ConwaysGameOfLife
         public bool Alive;
 
         // Cell constructor
-        public Cell(bool alive, int row, int col)
+        public Cell(bool alive, int row, int col, int size)
         {
             this.alive = alive;
+            changeOnNextTick = false;
             this.row = row;
             this.col = col;
+            gridSize = size;
             SetNeighbors();
+        }
+
+        public void ChangeAliveProperty()
+        {
+            alive = alive ? false : true;
         }
 
         public void SetNeighbors()
         {
-            neighbors = new List<List<int>>(8);
-            neighbors.Add(new List<int> { col - 1, row - 1 });
-            neighbors.Add(new List<int> { col - 1, row + 1 });
-            neighbors.Add(new List<int> { col - 1, row });
-            neighbors.Add(new List<int> { col + 1, row });
-            neighbors.Add(new List<int> { col + 1, row - 1 });
-            neighbors.Add(new List<int> { col + 1, row + 1 });
-            neighbors.Add(new List<int> { col, row - 1 });
-            neighbors.Add(new List<int> { col, row + 1 });
+            neighbors = new List<List<int>>();
+            if (row == 0 && col == 0)
+            {
+                neighbors.Add(new List<int> { row, col + 1 });
+                neighbors.Add(new List<int> { row + 1, col + 1 });
+                neighbors.Add(new List<int> { row + 1, col });
+            } else if(row == 0 && col == gridSize - 1)
+            {
+                neighbors.Add(new List<int> { row + 1, col });
+                neighbors.Add(new List<int> { row + 1, col - 1 });
+                neighbors.Add(new List<int> { row, col - 1 });
+            } else if(col == 0 && row == gridSize - 1)
+            {
+                neighbors.Add(new List<int> { row, col + 1 });
+                neighbors.Add(new List<int> { row - 1, col });
+                neighbors.Add(new List<int> { row - 1, col + 1 });
+
+            }
+            else if(row == gridSize -1 && col == gridSize - 1)
+            {
+                neighbors.Add(new List<int> { row - 1, col });
+                neighbors.Add(new List<int> { row - 1, col - 1 });
+                neighbors.Add(new List<int> { row, col - 1 });
+            } else if(row == 0)
+            {
+                neighbors.Add(new List<int> { row + 1, col - 1 });
+                neighbors.Add(new List<int> { row,     col - 1 });
+                neighbors.Add(new List<int> { row,     col + 1 });
+                neighbors.Add(new List<int> { row + 1, col + 1 });
+                neighbors.Add(new List<int> { row + 1, col     });
+            } else if(col == 0)
+            {
+                neighbors.Add(new List<int> { row,     col + 1 });
+                neighbors.Add(new List<int> { row + 1, col + 1 });
+                neighbors.Add(new List<int> { row + 1, col     });
+                neighbors.Add(new List<int> { row - 1, col + 1 });
+                neighbors.Add(new List<int> { row - 1, col     });
+            } else if(row == gridSize - 1)
+            {
+                neighbors.Add(new List<int> { row,     col - 1 });
+                neighbors.Add(new List<int> { row,     col + 1 });
+                neighbors.Add(new List<int> { row - 1, col - 1 });
+                neighbors.Add(new List<int> { row - 1, col + 1 });
+                neighbors.Add(new List<int> { row - 1, col     });
+            } else if(col == gridSize - 1)
+            {
+                neighbors.Add(new List<int> { row + 1, col - 1 });
+                neighbors.Add(new List<int> { row,     col - 1 });
+                neighbors.Add(new List<int> { row + 1, col     });
+                neighbors.Add(new List<int> { row - 1, col     });
+                neighbors.Add(new List<int> { row - 1, col - 1 });
+            } else
+            {
+                neighbors.Add(new List<int> { row + 1, col - 1 });
+                neighbors.Add(new List<int> { row,     col - 1 });
+                neighbors.Add(new List<int> { row,     col + 1 });
+                neighbors.Add(new List<int> { row + 1, col + 1 });
+                neighbors.Add(new List<int> { row + 1, col     });
+                neighbors.Add(new List<int> { row - 1, col - 1 });
+                neighbors.Add(new List<int> { row - 1, col + 1 });
+                neighbors.Add(new List<int> { row - 1, col     });
+            }
         }
 
     }

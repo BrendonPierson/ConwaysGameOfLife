@@ -105,7 +105,7 @@ namespace ConwaysGameOfLife
 
         public void Tick()
         {
-            // Iterate through hello work then restart
+            // Iterate through hello world then restart
             if(index >= phrase.Length)
             {
                 index = 0;
